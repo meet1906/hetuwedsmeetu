@@ -18,7 +18,7 @@ function App() {
         <MusicPlayer />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/journey" element={<Journey />} />
+          {/* <Route path="/journey" element={<Journey />} /> */}
           <Route path="/events" element={<Events />} />
           <Route path="/memories" element={<Memories />} />
           <Route path="/blessings" element={<Blessings />} />

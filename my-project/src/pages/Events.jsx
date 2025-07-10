@@ -22,7 +22,7 @@ const Events = () => {
       colors: "Yellow + Pink + Flower Motion",
       dressCode: "Light Pastel",
       location: "Purple Iris",
-      mapLink: "https://maps.google.com",
+      mapLink: "https://maps.app.goo.gl/DHXbhCEX6zKDqo6b9",
       bgColor: "from-yellow-200 to-pink-200",
       targetDate: new Date("2026-02-12T07:30:00")
     },
@@ -35,7 +35,7 @@ const Events = () => {
       colors: "Subtle Red/Orange",
       dressCode: "Saree / Kurta-Coti",
       location: "Purple Iris",
-      mapLink: "https://maps.google.com",
+      mapLink: "https://maps.app.goo.gl/DHXbhCEX6zKDqo6b9",
       bgColor: "from-red-200 to-orange-200",
       targetDate: new Date("2026-02-12T12:00:00")
     },
@@ -48,9 +48,13 @@ const Events = () => {
       colors: "Purple, Black, Musical Motion",
       dressCode: "Gown / Blazer",
       location: "Purple Iris",
-      mapLink: "https://maps.google.com",
+      mapLink: "https://maps.app.goo.gl/DHXbhCEX6zKDqo6b9",
       bgColor: "from-purple-200 to-black/20",
-      targetDate: new Date("2026-02-12T19:30:00")
+      targetDate: new Date("2026-02-12T19:30:00"),
+      timeline: [
+        { time: "7:30 PM", event: "Dance Performances from Family" },
+        { time: "9 PM", event: "DJ Party" }
+      ]
     },
     {
       id: 4,
@@ -61,11 +65,11 @@ const Events = () => {
       colors: "Cream + Red",
       dressCode: "Traditional Wedding Attire",
       location: "Vijyalaxmi Hall",
-      mapLink: "https://maps.google.com",
+      mapLink: "https://maps.app.goo.gl/e8HQSAd7LU833MPBA",
       bgColor: "from-red-200 to-cream",
       targetDate: new Date("2026-02-13T10:00:00"),
       timeline: [
-        { time: "10:00 AM", event: "Jaan Prasthaan from Jash Residency" },
+        { time: "10:00 AM", event: "Jaan Prasthaan from Jash Residency (Vesu)" },
         { time: "12:39 PM", event: "Hasta Melap at Vijyalaxmi Hall" }
       ]
     }

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,7 +32,7 @@ const Navbar = () => {
 
   const navItems = [
     { id: '/', label: 'Home' },
-    { id: '/journey', label: 'Our Journey' },
+    // { id: '/journey', label: 'Our Journey' },
     { id: '/events', label: 'Events' },
     { id: '/memories', label: 'Memories' },
     { id: '/blessings', label: 'Blessings' }
@@ -59,9 +60,12 @@ const Navbar = () => {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <div className="flex items-center cursor-pointer" onClick={() => navigateToPage('/') }>
-            <div className="text-2xl font-serif text-gold font-bold tracking-wider">
-              MH
-            </div>
+            <img
+              src="/MHRB.png"
+              alt="MH Logo"
+              className="h-10 w-10 object-contain mr-2"
+              style={{ borderRadius: '8px' }}
+            />
           </div>
 
           {/* Navigation Links */}
