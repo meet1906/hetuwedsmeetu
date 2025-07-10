@@ -1,35 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const Blessings = () => {
+  // Blessings Form State
   const [formData, setFormData] = useState({
     name: '',
     message: '',
     amount: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
+  // UPI details
+  const upiId = 'parvashah305@okicici';
+  const upiName = 'Parva Shah';
+
+  // Generate QR code URL using Google Chart API
+  const upiLink = formData.amount && !isNaN(formData.amount) && Number(formData.amount) > 0
+    ? `upi://pay?pa=${upiId}&pn=${upiName}&am=${formData.amount}&cu=INR`
+    : `upi://pay?pa=${upiId}&pn=${upiName}&cu=INR`;
+
+  // Blessings Form Handlers
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    
-    // Reset form after animation
-    setTimeout(() => {
-      setFormData({ name: '', message: '', amount: '' });
-      setIsSubmitted(false);
-    }, 4000);
+    // If no amount, show thank you immediately
+    if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) < 1) {
+      setIsSubmitted(true);
+      return;
+    }
+    // If amount is entered, handle payment
+    const isMobile = /android|iphone|ipad|ipod|opera mini|iemobile|mobile/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = upiLink;
+      // After redirect, show thank you (best effort, as redirect is instant)
+      setTimeout(() => setIsSubmitted(true), 1000);
+    } else {
+      setShowModal(true);
+    }
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  // Handler for desktop modal 'Payment Done' button
+  const handlePaymentDone = () => {
+    setShowModal(false);
+    setIsSubmitted(true);
+  };
+
+  useEffect(() => {
+    if (showModal) {
+      const upiLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${encodeURIComponent(formData.amount)}&cu=INR`;
+      // console.log('UPI QR value:', upiLink);
+    }
+  }, [showModal, formData.amount, upiId, upiName]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-pink-50 to-purple-50 pt-20">
-      <div className="max-w-4xl mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        {/* Modal for desktop QR code */}
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+            <div className="bg-white rounded-2xl p-8 flex flex-col items-center relative max-w-xs w-full">
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-pink-600 text-2xl"
+                onClick={() => setShowModal(false)}
+                aria-label="Close"
+              >
+                &times;
+              </button>
+              <h3 className="text-xl font-bold mb-4 text-pink-600">Scan to Pay via UPI</h3>
+              <QRCodeCanvas value={upiLink} size={160} />
+              <div className="mt-2 text-gray-700 text-sm text-center">
+                Scan this QR code with any UPI app<br />
+                {/* <span className="font-semibold">UPI ID:</span> {upiId} */}
+              </div>
+              <button
+                className="mt-6 bg-pink-600 text-white px-6 py-2 rounded font-semibold hover:bg-pink-700 transition text-lg"
+                onClick={handlePaymentDone}
+              >
+                Payment Done
+              </button>
+            </div>
+          </div>
+        )}
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -54,7 +111,6 @@ const Blessings = () => {
         >
           {/* Decorative Elements */}
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-400 via-purple-400 to-yellow-400"></div>
-          
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
@@ -89,7 +145,7 @@ const Blessings = () => {
                 />
               </div>
 
-              {/* Gift Amount (Razorpay Placeholder) */}
+              {/* Gift Amount (Optional) */}
               <div>
                 <label className="block text-lg font-medium text-gray-700 mb-3">
                   Gift Amount (Optional)
@@ -107,7 +163,7 @@ const Blessings = () => {
                   />
                 </div>
                 <p className="text-sm text-gray-500 mt-2">
-                  Secure payment powered by Razorpay (Demo)
+                  This is just a message form. For actual payment, use the UPI button after submitting.
                 </p>
               </div>
 
