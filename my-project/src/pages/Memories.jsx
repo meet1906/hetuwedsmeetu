@@ -14,7 +14,7 @@ const Memories = () => {
       title: "Welcome Ceremony",
       date: "13 Dec 2024",
       theme: "Welcome Home",
-      description: "Arrival of Hetvi to G2 901. Jain family welcome, blessings, cake, snacks.",
+      description: "Arrival of Hetvi to G2 901 & Arrival of Meet to Neelkamal. Family welcome, blessings, cake, and Gujarati snacks.",
       colors: "from-pink-300 to-cream",
       images: 8,
       videos: 0
@@ -31,7 +31,7 @@ const Memories = () => {
     },
     {
       id: 3,
-      title: "Box Cricket Match",
+      title: "Shah Premier League - Box Cricket Match",
       date: "12 July 2025",
       theme: "Cricket Showdown",
       description: "3-match box cricket tournament - family vs family competition.",
@@ -40,12 +40,12 @@ const Memories = () => {
       videos: 1,
       scorecard: {
         matches: [
-          { match: 1, teamMeet: "56/5", teamHetvi: "62/3", winner: "Team Hetvi" },
-          { match: 2, teamMeet: "48/4", teamHetvi: "40/6", winner: "Team Meet" },
-          { match: 3, teamMeet: "65/2", teamHetvi: "63/4", winner: "Team Meet" }
+          { match: 1, teamMeet: "85/7", teamHetvi: "86/1", winner: "Team Hetvi" },
+          { match: 2, teamMeet: "110/3", teamHetvi: "112/3", winner: "Team Hetvi" },
+          { match: 3, teamMeet: "76/5", teamHetvi: "33/7", winner: "Team Hetvi" }
         ],
-        finalWinner: "Team Meet",
-        playerOfMatch: "To be announced"
+        finalWinner: "Team Hetvi",
+        playerOfMatch: "Deep Shah (Team Hetvi), Yash Shah (Team Hetvi) & Parva Shah (Team Meet)"
       }
     }
   ];
@@ -168,7 +168,7 @@ const Memories = () => {
                     <div className="text-center">
                       <div className="inline-block bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-6 py-3 rounded-xl">
                         <div className="font-bold text-lg">Final Winner: {memory.scorecard.finalWinner}</div>
-                        <div className="text-sm">Player of the Match: {memory.scorecard.playerOfMatch}</div>
+                        <div className="text-sm">Players of the Tournament: {memory.scorecard.playerOfMatch}</div>
                       </div>
                     </div>
                   </motion.div>
