@@ -146,7 +146,7 @@ const Blessings = () => {
               </div>
 
               {/* Gift Amount (Optional) */}
-              <div>
+              {/* <div>
                 <label className="block text-lg font-medium text-gray-700 mb-3">
                   Gift Amount (Optional)
                 </label>
@@ -165,7 +165,7 @@ const Blessings = () => {
                 <p className="text-sm text-gray-500 mt-2">
                   This is just a message form. For actual payment, use the UPI button after submitting.
                 </p>
-              </div>
+              </div> */}
 
               {/* Submit Button */}
               <motion.button
