@@ -4,6 +4,20 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    'from-pink-300',
+    'from-purple-300',
+    'from-green-300',
+    'to-cream',
+    'to-pink-300',
+    'to-blue-300',
+    'bg-gradient-to-br',
+    'from-green-100', 'via-emerald-50', 'to-teal-100',
+    'from-yellow-100', 'via-orange-50', 'to-pink-100',
+    'from-red-100', 'via-orange-50', 'to-yellow-100',
+    'from-indigo-100', 'via-purple-100', 'to-pink-100',
+    'from-red-100', 'via-cream', 'to-red-50'
+  ],
   theme: {
     extend: {
       colors: {

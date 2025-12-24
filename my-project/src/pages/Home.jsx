@@ -1,15 +1,16 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedOverlay from '../components/AnimatedOverlay';
-import bgImage from '../assets/hsp-219.jpg';
+import { getOptimizedImage } from '../lib/cloudinary';
 
 const Home = () => {
+  const bgImage = getOptimizedImage('wedding/core/hero_bg');
+
   return (
     <div id="home" className="relative w-screen h-screen overflow-hidden">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${bgImage})` }}
+        style={{ backgroundImage: `url("${bgImage}")` }}
       />
       
       {/* Gradient Overlay */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-// RSVPModal import removed
+import { getOptimizedVideo } from '../lib/cloudinary';
 
 // Import attire images
 import mehendiImg from '../assets/attire/Mehendi image.png';
@@ -9,7 +9,8 @@ import haldiImg from '../assets/attire/Carnival of Colours image.png';
 import mameruImg from '../assets/attire/Mameru image.png';
 import sangeetImg from '../assets/attire/Sangeet image.png';
 import weddingImg from '../assets/attire/The Wedding image.png';
-import attireVid from '../assets/attire/Attire.mp4';
+
+const attireVid = getOptimizedVideo('wedding/core/attire_video');
 
 const ALL_EVENTS = [
   {
