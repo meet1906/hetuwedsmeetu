@@ -70,9 +70,9 @@ import engPhoto29 from '../assets/engagement/Photos-3-001/IMG_3641.JPG';
 import engPhoto30 from '../assets/engagement/Photos-3-001/IMG_3648.JPG';
 
 // Import Engagement Videos
-import engVid1 from '../assets/engagement/Engagement reel.mp4';
-import engVid2 from '../assets/engagement/FINAL HIGHLIGHT.mp4';
 import engVid3 from '../assets/engagement/Photos-3-001/99a29675-fc09-466d-8c16-98639a7310c6.mp4';
+const engVid1 = "https://youtu.be/sl02LXK0NHE?si=wWUIDqRKPp8o1aoP";
+const engVid2 = "https://youtu.be/La_PHwnouGw?si=HC08bogI0liNu1dd";
 
 const Memories = () => {
   const [ref, inView] = useInView({

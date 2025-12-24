@@ -26,10 +26,14 @@ const MediaModal = ({ isOpen, onClose, media, currentIndex, setCurrentIndex }) =
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handlePrevious, handleNext, onClose]);
 
-  if (!isOpen || !media || media.length === 0) return null;
+  const getYouTubeId = (url) => {
+    if (!url || typeof url !== 'string') return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
 
-  const currentItem = media[currentIndex];
-  if (!currentItem) return null;
+  const isYouTube = getYouTubeId(currentItem.src);
 
   return (
     <motion.div
@@ -80,7 +84,7 @@ const MediaModal = ({ isOpen, onClose, media, currentIndex, setCurrentIndex }) =
         animate={{ opacity: 1, scale: 1, x: 0 }}
         exit={{ opacity: 0, scale: 0.9, x: -20 }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="relative z-[105] max-w-full max-h-full flex items-center justify-center pointer-events-auto"
+        className="relative z-[105] w-full max-w-6xl max-h-full flex items-center justify-center pointer-events-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {currentItem.type === 'photo' ? (
@@ -89,6 +93,17 @@ const MediaModal = ({ isOpen, onClose, media, currentIndex, setCurrentIndex }) =
             alt="Memory"
             className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
           />
+        ) : isYouTube ? (
+          <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl bg-black">
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${isYouTube}?autoplay=1&mute=0&rel=0`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
         ) : (
           <div className="relative w-full max-w-5xl">
             <video
