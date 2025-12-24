@@ -1,139 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { getOptimizedImage, getOptimizedVideo } from '../lib/cloudinary';
 import MediaModal from '../components/MediaModal';
-
-// --- ASSET IMPORTS ---
-
-// Welcome Ceremony
-import wcPhoto1 from '../assets/welcomeceremony/115f3cc9-60db-49fc-9754-9b4463ebe69f.jpg';
-import wcPhoto2 from '../assets/welcomeceremony/425e3e7d-c60e-4ff6-a5b1-80b9185762f6.jpg';
-import wcPhoto3 from '../assets/welcomeceremony/4fecaebb-d808-4e1e-8b59-74b57d2f51f3.jpg';
-import wcPhoto4 from '../assets/welcomeceremony/58fffcc0-91c6-418c-a24f-c5ea8c05f1e1.jpg';
-import wcPhoto5 from '../assets/welcomeceremony/6796ba37-4597-42d1-a7e9-bce0701bafdc.jpg';
-import wcPhoto6 from '../assets/welcomeceremony/768b68a7-9742-49ce-9b98-08700f4c36e4.jpg';
-import wcPhoto7 from '../assets/welcomeceremony/9743a047-60d6-40a8-9796-c5111ceda1ef.jpg';
-import wcPhoto8 from '../assets/welcomeceremony/9F41D0F9-15A2-4C01-87BD-92025102F55D.jpg';
-import wcPhoto9 from '../assets/welcomeceremony/d5e1dcf4-a24e-4c36-b9c6-d6acace37429.jpg';
-import wcPhoto10 from '../assets/welcomeceremony/f11b0b79-5069-4b5e-a2dc-13b7b3da2914.jpg';
-import wcPhoto11 from '../assets/welcomeceremony/IMG_0150.HEIC';
-import wcPhoto12 from '../assets/welcomeceremony/IMG_0157.HEIC';
-import wcPhoto13 from '../assets/welcomeceremony/IMG_0171.HEIC';
-import wcPhoto14 from '../assets/welcomeceremony/IMG_1407.HEIC';
-import wcPhoto15 from '../assets/welcomeceremony/IMG_1410.HEIC';
-import wcPhoto16 from '../assets/welcomeceremony/IMG_1415.HEIC';
-import wcPhoto17 from '../assets/welcomeceremony/IMG_1458.HEIC';
-import wcPhoto18 from '../assets/welcomeceremony/IMG_1471.HEIC';
-import wcPhoto19 from '../assets/welcomeceremony/IMG_1477.HEIC';
-import wcPhoto20 from '../assets/welcomeceremony/IMG_5417.HEIC';
-
-import wcVid1 from '../assets/welcomeceremony/IMG_0109.MOV';
-import wcVid2 from '../assets/welcomeceremony/IMG_0115.MOV';
-import wcVid3 from '../assets/welcomeceremony/IMG_0121.MOV';
-import wcVid4 from '../assets/welcomeceremony/IMG_0150.MP4';
-import wcVid5 from '../assets/welcomeceremony/IMG_0157.MP4';
-import wcVid6 from '../assets/welcomeceremony/IMG_0171.MP4';
-import wcVid7 from '../assets/welcomeceremony/IMG_1407.MP4';
-import wcVid8 from '../assets/welcomeceremony/IMG_1409.MOV';
-import wcVid9 from '../assets/welcomeceremony/IMG_1471.MP4';
-import wcVid10 from '../assets/welcomeceremony/IMG_1477.MP4';
-
-// Engagement
-import engPhoto1 from '../assets/engagement/Photos-3-001/IMG_2546.JPG';
-import engPhoto2 from '../assets/engagement/Photos-3-001/IMG_2547.JPG';
-import engPhoto3 from '../assets/engagement/Photos-3-001/IMG_3074.JPG';
-import engPhoto4 from '../assets/engagement/Photos-3-001/IMG_3552.JPG';
-import engPhoto5 from '../assets/engagement/Photos-3-001/IMG_3553.JPG';
-import engPhoto6 from '../assets/engagement/Photos-3-001/IMG_3554.JPG';
-import engPhoto7 from '../assets/engagement/Photos-3-001/IMG_3555.JPG';
-import engPhoto8 from '../assets/engagement/Photos-3-001/IMG_3556.JPG';
-import engPhoto9 from '../assets/engagement/Photos-3-001/IMG_3557.JPG';
-import engPhoto10 from '../assets/engagement/Photos-3-001/IMG_3559.JPG';
-import engPhoto11 from '../assets/engagement/Photos-3-001/IMG_3561.JPG';
-import engPhoto12 from '../assets/engagement/Photos-3-001/IMG_3564.JPG';
-import engPhoto13 from '../assets/engagement/Photos-3-001/IMG_3565.JPG';
-import engPhoto14 from '../assets/engagement/Photos-3-001/IMG_3567.JPG';
-import engPhoto15 from '../assets/engagement/Photos-3-001/IMG_3572.JPG';
-import engPhoto16 from '../assets/engagement/Photos-3-001/IMG_3574.JPG';
-import engPhoto17 from '../assets/engagement/Photos-3-001/IMG_3577.JPG';
-import engPhoto18 from '../assets/engagement/Photos-3-001/IMG_3588.JPG';
-import engPhoto19 from '../assets/engagement/Photos-3-001/IMG_3592.JPG';
-import engPhoto20 from '../assets/engagement/Photos-3-001/IMG_3598.JPG';
-import engPhoto21 from '../assets/engagement/Photos-3-001/IMG_3599.JPG';
-import engPhoto22 from '../assets/engagement/Photos-3-001/IMG_3600.JPG';
-import engPhoto23 from '../assets/engagement/Photos-3-001/IMG_3601.JPG';
-import engPhoto24 from '../assets/engagement/Photos-3-001/IMG_3602.JPG';
-import engPhoto25 from '../assets/engagement/Photos-3-001/IMG_3604.JPG';
-import engPhoto26 from '../assets/engagement/Photos-3-001/IMG_3634.JPG';
-import engPhoto27 from '../assets/engagement/Photos-3-001/IMG_3638.JPG';
-import engPhoto28 from '../assets/engagement/Photos-3-001/IMG_3639.JPG';
-import engPhoto29 from '../assets/engagement/Photos-3-001/IMG_3641.JPG';
-import engPhoto30 from '../assets/engagement/Photos-3-001/IMG_3648.JPG';
-
-import engVid3 from '../assets/engagement/Photos-3-001/99a29675-fc09-466d-8c16-98639a7310c6.mp4';
-const engVid1 = "https://youtu.be/sl02LXK0NHE?si=wWUIDqRKPp8o1aoP";
-const engVid2 = "https://youtu.be/La_PHwnouGw?si=HC08bogI0liNu1dd";
-
-// --- MEMORIES DATA ---
-
-const ALL_MEMORIES = [
-  {
-    id: 1,
-    title: "Welcome Ceremony",
-    date: "13 & 15 Dec 2024",
-    theme: "Welcome Home",
-    description: "13 Dec: Hetvi visited G2 901 Happy Glorious & 15 Dec: Meet visited Neelkamal. Family welcome, blessings, cake, and Gujarati snacks.",
-    colors: "from-pink-300 to-cream",
-    media: [
-      { type: 'photo', src: wcPhoto1 }, { type: 'photo', src: wcPhoto2 }, { type: 'photo', src: wcPhoto3 }, { type: 'photo', src: wcPhoto4 },
-      { type: 'photo', src: wcPhoto5 }, { type: 'photo', src: wcPhoto6 }, { type: 'photo', src: wcPhoto7 }, { type: 'photo', src: wcPhoto8 },
-      { type: 'photo', src: wcPhoto9 }, { type: 'photo', src: wcPhoto10 }, { type: 'photo', src: wcPhoto11 }, { type: 'photo', src: wcPhoto12 },
-      { type: 'photo', src: wcPhoto13 }, { type: 'photo', src: wcPhoto14 }, { type: 'photo', src: wcPhoto15 }, { type: 'photo', src: wcPhoto16 },
-      { type: 'photo', src: wcPhoto17 }, { type: 'photo', src: wcPhoto18 }, { type: 'photo', src: wcPhoto19 }, { type: 'photo', src: wcPhoto20 },
-      { type: 'video', src: wcVid1 }, { type: 'video', src: wcVid2 }, { type: 'video', src: wcVid3 }, { type: 'video', src: wcVid4 },
-      { type: 'video', src: wcVid5 }, { type: 'video', src: wcVid6 }, { type: 'video', src: wcVid7 }, { type: 'video', src: wcVid8 },
-      { type: 'video', src: wcVid9 }, { type: 'video', src: wcVid10 },
-    ]
-  },
-  {
-    id: 2,
-    title: "Engagement",
-    date: "9 Feb 2025",
-    theme: "Ring Exchange",
-    description: "A romantic evening filled with love, laughter, and the promise of forever.",
-    colors: "from-purple-300 to-pink-300",
-    media: [
-      { type: 'photo', src: engPhoto1 }, { type: 'photo', src: engPhoto2 }, { type: 'photo', src: engPhoto3 }, { type: 'photo', src: engPhoto4 },
-      { type: 'photo', src: engPhoto5 }, { type: 'photo', src: engPhoto6 }, { type: 'photo', src: engPhoto7 }, { type: 'photo', src: engPhoto8 },
-      { type: 'photo', src: engPhoto9 }, { type: 'photo', src: engPhoto10 }, { type: 'photo', src: engPhoto11 }, { type: 'photo', src: engPhoto12 },
-      { type: 'photo', src: engPhoto13 }, { type: 'photo', src: engPhoto14 }, { type: 'photo', src: engPhoto15 }, { type: 'photo', src: engPhoto16 },
-      { type: 'photo', src: engPhoto17 }, { type: 'photo', src: engPhoto18 }, { type: 'photo', src: engPhoto19 }, { type: 'photo', src: engPhoto20 },
-      { type: 'photo', src: engPhoto21 }, { type: 'photo', src: engPhoto22 }, { type: 'photo', src: engPhoto23 }, { type: 'photo', src: engPhoto24 },
-      { type: 'photo', src: engPhoto25 }, { type: 'photo', src: engPhoto26 }, { type: 'photo', src: engPhoto27 }, { type: 'photo', src: engPhoto28 },
-      { type: 'photo', src: engPhoto29 }, { type: 'photo', src: engPhoto30 },
-      { type: 'video', src: engVid1 }, { type: 'video', src: engVid2 }, { type: 'video', src: engVid3 },
-    ]
-  },
-  {
-    id: 3,
-    title: "Shah Premier League - Box Cricket Match",
-    date: "12 July 2025",
-    theme: "Cricket Showdown",
-    description: "3-match box cricket tournament - family vs family competition.",
-    colors: "from-green-300 to-blue-300",
-    images: 15,
-    videos: 1,
-    scorecard: {
-      matches: [
-        { match: 1, teamMeet: "85/7", teamHetvi: "86/1", winner: "Team Hetvi" },
-        { match: 2, teamMeet: "110/3", teamHetvi: "112/3", winner: "Team Hetvi" },
-        { match: 3, teamMeet: "76/5", teamHetvi: "33/7", winner: "Team Hetvi" }
-      ],
-      finalWinner: "Team Hetvi",
-      playerOfMatch: "Deep Shah, Yash Shah & Parva Shah"
-    }
-  }
-];
 
 // --- HELPERS ---
 
@@ -154,10 +25,19 @@ const MediaSection = ({ memory, openLightbox }) => {
   
   const { combined, displayedMedia, hasMore } = useMemo(() => {
     if (!memory.media) return { combined: [], displayedMedia: [], hasMore: false };
-    const vids = memory.media.filter(m => m.type === 'video');
-    const pics = memory.media.filter(m => m.type === 'photo');
+    
+    // Resolve full URLs for Cloudinary assets
+    const resolvedMedia = memory.media.map(item => ({
+      ...item,
+      // If it's not a YouTube link, it's a Cloudinary public ID
+      originalSrc: item.isExternal ? item.src : (item.type === 'video' ? getOptimizedVideo(item.src) : getOptimizedImage(item.src))
+    }));
+
+    const vids = resolvedMedia.filter(m => m.type === 'video');
+    const pics = resolvedMedia.filter(m => m.type === 'photo');
     const full = [...vids, ...pics];
     const initial = [...vids.slice(0, 3), ...pics.slice(0, 10)];
+    
     return { 
       combined: full, 
       displayedMedia: isExpanded ? full : initial,
@@ -165,27 +45,15 @@ const MediaSection = ({ memory, openLightbox }) => {
     };
   }, [memory.media, isExpanded]);
 
-  if (!memory.media) {
-    // Placeholder grid for events without actual media files yet
+  if (!memory.media || memory.media.length === 0) {
+    // Placeholder grid (same as before)
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
-        {[...Array(Math.min(memory.images || 0, 8))].map((_, i) => (
-          <motion.div key={i} whileHover={{ scale: 1.05 }} className="aspect-square bg-white/30 backdrop-blur-sm rounded-2xl flex items-center justify-center cursor-pointer border border-white/20">
-            <div className="text-center">
+        {[...Array(8)].map((_, i) => (
+          <motion.div key={i} className="aspect-square bg-white/30 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/20">
+            <div className="text-center opacity-50">
               <div className="w-8 h-8 bg-gray-400/50 rounded-lg mx-auto mb-2"></div>
-              <span className="text-xs text-gray-600 font-medium">Photo {i + 1}</span>
-            </div>
-          </motion.div>
-        ))}
-        {[...Array(memory.videos || 0)].map((_, i) => (
-          <motion.div key={`video-${i}`} whileHover={{ scale: 1.05 }} className="aspect-square bg-white/30 backdrop-blur-sm rounded-2xl flex items-center justify-center cursor-pointer border border-white/20">
-            <div className="text-center">
-              <div className="w-8 h-8 bg-red-400/50 rounded-lg mx-auto mb-2 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-0 h-0 border-l-4 border-l-white border-y-2 border-y-transparent ml-0.5"></div>
-                </div>
-              </div>
-              <span className="text-xs text-gray-600 font-medium">Video {i + 1}</span>
+              <span className="text-xs text-gray-600 font-medium">Coming Soon</span>
             </div>
           </motion.div>
         ))}
@@ -197,7 +65,8 @@ const MediaSection = ({ memory, openLightbox }) => {
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
         {displayedMedia.map((item, i) => {
-          const ytThumbnail = item.type === 'video' ? getYouTubeThumbnail(item.src) : null;
+          const ytId = item.isExternal ? (item.src.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^#&?]*)/)?.[1]) : null;
+          const ytThumbnail = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : null;
           const actualIndex = combined.indexOf(item);
 
           return (
@@ -209,18 +78,18 @@ const MediaSection = ({ memory, openLightbox }) => {
             >
               {item.type === 'photo' ? (
                 <img 
-                  src={item.src} 
+                  src={item.originalSrc} 
                   alt="Memory"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
               ) : (
-                <div className="relative w-full h-full bg-black group">
+                <div className="relative w-full h-full bg-slate-900 group">
                   {ytThumbnail ? (
                     <img src={ytThumbnail} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Video preview"/>
                   ) : (
                     <video
-                      src={item.src}
+                      src={item.originalSrc}
                       className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                       muted
                       onMouseEnter={(e) => e.target.play()}
@@ -232,8 +101,8 @@ const MediaSection = ({ memory, openLightbox }) => {
                       <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
                     </div>
                   </div>
-                  {ytThumbnail && (
-                    <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-red-600 text-white text-[10px] rounded font-bold uppercase tracking-wider">
+                  {item.isExternal && (
+                    <div className="absolute bottom-2 right-2 px-2 py-0.5 text-white text-[10px] rounded font-bold uppercase tracking-wider bg-red-600">
                       YouTube
                     </div>
                   )}
@@ -266,9 +135,28 @@ const MediaSection = ({ memory, openLightbox }) => {
 const Memories = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [modalState, setModalState] = useState({ isOpen: false, media: [], currentIndex: 0 });
+  const [memories, setMemories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch from Firestore
+  React.useEffect(() => {
+    const q = query(collection(db, "memories"), orderBy("order", "asc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const docs = snapshot.docs.map(doc => ({
+        docId: doc.id,
+        ...doc.data()
+      }));
+      setMemories(docs);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const openLightbox = (mediaArray, index) => {
-    setModalState({ isOpen: true, media: mediaArray, currentIndex: index });
+    // MediaModal expects { type, src }
+    // We pass combined items which now have 'originalSrc' ready
+    const modalMedia = mediaArray.map(m => ({ ...m, src: m.originalSrc }));
+    setModalState({ isOpen: true, media: modalMedia, currentIndex: index });
   };
 
   return (
@@ -284,65 +172,69 @@ const Memories = () => {
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">Capturing the beautiful moments of our journey together</p>
         </motion.div>
 
-        <div ref={ref} className="space-y-16">
-          {ALL_MEMORIES.map((memory, index) => (
-            <motion.div
-              key={memory.id}
-              initial={{ opacity: 0, y: 100 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: index * 0.3 }}
-              className={`bg-gradient-to-br ${memory.colors} rounded-3xl shadow-xl overflow-hidden`}
-            >
-              <div className="p-8 md:p-12">
-                <div className="text-center mb-8">
-                  <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-800 mb-4">{memory.title}</h2>
-                  <p className="text-xl text-gray-700/80 mb-2 font-medium">{memory.date}</p>
-                  <p className="text-lg text-gray-600 italic mb-6">{memory.theme}</p>
-                  <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">{memory.description}</p>
-                </div>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-16 h-16 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin mb-4"></div>
+            <p className="text-gray-500 font-medium">Loading memories from the cloud...</p>
+          </div>
+        ) : (
+          <div ref={ref} className="space-y-16">
+            {memories.map((memory, index) => (
+              <motion.div
+                key={memory.docId}
+                initial={{ opacity: 0, y: 100 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: index * 0.3 }}
+                className={`bg-gradient-to-br ${memory.colors} rounded-3xl shadow-xl overflow-hidden`}
+              >
+                <div className="p-8 md:p-12">
+                  <div className="text-center mb-8">
+                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-800 mb-4">{memory.title}</h2>
+                    <p className="text-xl text-gray-700/80 mb-2 font-medium">{memory.date}</p>
+                    <p className="text-lg text-gray-600 italic mb-6">{memory.theme}</p>
+                    <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">{memory.description}</p>
+                  </div>
 
-                <MediaSection memory={memory} openLightbox={openLightbox} />
+                  <MediaSection memory={memory} openLightbox={openLightbox} />
 
-                {memory.scorecard && (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.9 }} 
-                    animate={inView ? { opacity: 1, scale: 1 } : {}} 
-                    transition={{ duration: 0.8, delay: 0.5 }} 
-                    className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 mt-12 shadow-inner border border-white/50"
-                  >
-                    <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Match Scorecard</h3>
-                    <div className="grid md:grid-cols-3 gap-4 mb-8">
-                      {memory.scorecard.matches.map((match, i) => (
-                        <div key={i} className="bg-white/40 rounded-xl p-4 border border-white/30">
-                          <h4 className="font-bold text-gray-800 mb-3 text-center">Match {match.match}</h4>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Team Meet</span>
-                              <span className="font-mono font-bold text-gray-800">{match.teamMeet}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Team Hetvi</span>
-                              <span className="font-mono font-bold text-gray-800">{match.teamHetvi}</span>
-                            </div>
-                            <div className="border-t border-gray-200 pt-2 font-semibold text-center text-green-600 mt-2">
-                              Winner: {match.winner}
+                  {memory.scorecard && (
+                    <motion.div 
+                      className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 mt-12 shadow-inner border border-white/50"
+                    >
+                      <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Match Scorecard</h3>
+                      <div className="grid md:grid-cols-3 gap-4 mb-8">
+                        {memory.scorecard.matches.map((match, i) => (
+                          <div key={i} className="bg-white/40 rounded-xl p-4 border border-white/30">
+                            <h4 className="font-bold text-gray-800 mb-3 text-center">Match {match.match}</h4>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Team Meet</span>
+                                <span className="font-mono font-bold text-gray-800">{match.teamMeet}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Team Hetvi</span>
+                                <span className="font-mono font-bold text-gray-800">{match.teamHetvi}</span>
+                              </div>
+                              <div className="border-t border-gray-200 pt-2 font-semibold text-center text-green-600 mt-2">
+                                Winner: {match.winner}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="text-center">
-                      <div className="inline-block bg-gradient-to-br from-yellow-400 to-amber-600 text-white px-8 py-4 rounded-2xl shadow-xl">
-                        <div className="font-bold text-xl mb-1 text-white">🏆 Final Winner: {memory.scorecard.finalWinner}</div>
-                        <div className="text-sm font-medium opacity-90">{memory.scorecard.playerOfMatch}</div>
+                        ))}
                       </div>
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                      <div className="text-center">
+                        <div className="inline-block bg-gradient-to-br from-yellow-400 to-amber-600 text-white px-8 py-4 rounded-2xl shadow-xl">
+                          <div className="font-bold text-xl mb-1 text-white">🏆 Final Winner: {memory.scorecard.finalWinner}</div>
+                          <div className="text-sm font-medium opacity-90">{memory.scorecard.playerOfMatch}</div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
 
       <AnimatePresence>
