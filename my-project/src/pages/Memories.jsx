@@ -37,6 +37,43 @@ import wcVid8 from '../assets/welcomeceremony/IMG_1409.MOV';
 import wcVid9 from '../assets/welcomeceremony/IMG_1471.MP4';
 import wcVid10 from '../assets/welcomeceremony/IMG_1477.MP4';
 
+// Import Engagement Photos
+import engPhoto1 from '../assets/engagement/Photos-3-001/IMG_2546.JPG';
+import engPhoto2 from '../assets/engagement/Photos-3-001/IMG_2547.JPG';
+import engPhoto3 from '../assets/engagement/Photos-3-001/IMG_3074.JPG';
+import engPhoto4 from '../assets/engagement/Photos-3-001/IMG_3552.JPG';
+import engPhoto5 from '../assets/engagement/Photos-3-001/IMG_3553.JPG';
+import engPhoto6 from '../assets/engagement/Photos-3-001/IMG_3554.JPG';
+import engPhoto7 from '../assets/engagement/Photos-3-001/IMG_3555.JPG';
+import engPhoto8 from '../assets/engagement/Photos-3-001/IMG_3556.JPG';
+import engPhoto9 from '../assets/engagement/Photos-3-001/IMG_3557.JPG';
+import engPhoto10 from '../assets/engagement/Photos-3-001/IMG_3559.JPG';
+import engPhoto11 from '../assets/engagement/Photos-3-001/IMG_3561.JPG';
+import engPhoto12 from '../assets/engagement/Photos-3-001/IMG_3564.JPG';
+import engPhoto13 from '../assets/engagement/Photos-3-001/IMG_3565.JPG';
+import engPhoto14 from '../assets/engagement/Photos-3-001/IMG_3567.JPG';
+import engPhoto15 from '../assets/engagement/Photos-3-001/IMG_3572.JPG';
+import engPhoto16 from '../assets/engagement/Photos-3-001/IMG_3574.JPG';
+import engPhoto17 from '../assets/engagement/Photos-3-001/IMG_3577.JPG';
+import engPhoto18 from '../assets/engagement/Photos-3-001/IMG_3588.JPG';
+import engPhoto19 from '../assets/engagement/Photos-3-001/IMG_3592.JPG';
+import engPhoto20 from '../assets/engagement/Photos-3-001/IMG_3598.JPG';
+import engPhoto21 from '../assets/engagement/Photos-3-001/IMG_3599.JPG';
+import engPhoto22 from '../assets/engagement/Photos-3-001/IMG_3600.JPG';
+import engPhoto23 from '../assets/engagement/Photos-3-001/IMG_3601.JPG';
+import engPhoto24 from '../assets/engagement/Photos-3-001/IMG_3602.JPG';
+import engPhoto25 from '../assets/engagement/Photos-3-001/IMG_3604.JPG';
+import engPhoto26 from '../assets/engagement/Photos-3-001/IMG_3634.JPG';
+import engPhoto27 from '../assets/engagement/Photos-3-001/IMG_3638.JPG';
+import engPhoto28 from '../assets/engagement/Photos-3-001/IMG_3639.JPG';
+import engPhoto29 from '../assets/engagement/Photos-3-001/IMG_3641.JPG';
+import engPhoto30 from '../assets/engagement/Photos-3-001/IMG_3648.JPG';
+
+// Import Engagement Videos
+import engVid1 from '../assets/engagement/Engagement reel.mp4';
+import engVid2 from '../assets/engagement/FINAL HIGHLIGHT.mp4';
+import engVid3 from '../assets/engagement/Photos-3-001/99a29675-fc09-466d-8c16-98639a7310c6.mp4';
+
 const Memories = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -105,8 +142,41 @@ const Memories = () => {
       theme: "Ring Exchange",
       description: "A romantic evening filled with love, laughter, and the promise of forever.",
       colors: "from-purple-300 to-pink-300",
-      images: 12,
-      videos: 2
+      media: [
+        { type: 'photo', src: engPhoto1 },
+        { type: 'photo', src: engPhoto2 },
+        { type: 'photo', src: engPhoto3 },
+        { type: 'photo', src: engPhoto4 },
+        { type: 'photo', src: engPhoto5 },
+        { type: 'photo', src: engPhoto6 },
+        { type: 'photo', src: engPhoto7 },
+        { type: 'photo', src: engPhoto8 },
+        { type: 'photo', src: engPhoto9 },
+        { type: 'photo', src: engPhoto10 },
+        { type: 'photo', src: engPhoto11 },
+        { type: 'photo', src: engPhoto12 },
+        { type: 'photo', src: engPhoto13 },
+        { type: 'photo', src: engPhoto14 },
+        { type: 'photo', src: engPhoto15 },
+        { type: 'photo', src: engPhoto16 },
+        { type: 'photo', src: engPhoto17 },
+        { type: 'photo', src: engPhoto18 },
+        { type: 'photo', src: engPhoto19 },
+        { type: 'photo', src: engPhoto20 },
+        { type: 'photo', src: engPhoto21 },
+        { type: 'photo', src: engPhoto22 },
+        { type: 'photo', src: engPhoto23 },
+        { type: 'photo', src: engPhoto24 },
+        { type: 'photo', src: engPhoto25 },
+        { type: 'photo', src: engPhoto26 },
+        { type: 'photo', src: engPhoto27 },
+        { type: 'photo', src: engPhoto28 },
+        { type: 'photo', src: engPhoto29 },
+        { type: 'photo', src: engPhoto30 },
+        { type: 'video', src: engVid1 },
+        { type: 'video', src: engVid2 },
+        { type: 'video', src: engVid3 },
+      ]
     },
     {
       id: 3,
