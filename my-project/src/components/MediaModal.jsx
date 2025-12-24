@@ -26,6 +26,11 @@ const MediaModal = ({ isOpen, onClose, media, currentIndex, setCurrentIndex }) =
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handlePrevious, handleNext, onClose]);
 
+  if (!isOpen || !media || media.length === 0) return null;
+
+  const currentItem = media[currentIndex];
+  if (!currentItem) return null;
+
   const getYouTubeId = (url) => {
     if (!url || typeof url !== 'string') return null;
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
