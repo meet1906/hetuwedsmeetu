@@ -158,6 +158,7 @@ const MEMORIES_DATA = [
     description: "Celebrating the auspicious beginning of invitation writing at Hetvi's home.",
     colors: "from-pink-400 to-rose-100",
     media: [
+      { type: "video", src: "https://youtube.com/shorts/F91ZFla2hi4?si=8Ipk4UDC46OuSCxw", isExternal: true },
       { type: "photo", src: "wedding/hetvi-kankotri/PSK_7361" },
       { type: "photo", src: "wedding/hetvi-kankotri/PSK_7363" },
       { type: "photo", src: "wedding/hetvi-kankotri/PSK_7388" },
@@ -198,7 +199,39 @@ const MEMORIES_DATA = [
     theme: "Traditional Writing",
     description: "Celebrating the auspicious beginning of invitation writing at Meet's home.",
     colors: "from-sky-400 to-blue-100",
-    media: [] // Add Cloudinary IDs here later!
+    media: [
+      { type: "video", src: "https://drive.google.com/file/d/1rKG1e5c86w2ZEyNyYYgT77IJ-8SFuacf/view?usp=sharing", isExternal: true },
+      { type: "photo", src: "wedding/meet-kankotri/P3963630" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963639" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963651" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963695" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963759" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963787" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963790" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963803" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963804" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963827" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963829" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963844" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963879" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963943" },
+      { type: "photo", src: "wedding/meet-kankotri/P3963982" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964005" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964012" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964028" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964111" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964141" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964150" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964175" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964177" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964178" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964193" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964227" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964232" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964267" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964373" },
+      { type: "photo", src: "wedding/meet-kankotri/P3964428" }
+    ] // Add Cloudinary IDs here later!
   }
 ];
 

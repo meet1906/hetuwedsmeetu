@@ -10,12 +10,26 @@ import MediaModal from '../components/MediaModal';
 
 const getYouTubeThumbnail = (url) => {
   if (!url || typeof url !== 'string') return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  // Support standard videos and Shorts
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
   const match = url.match(regExp);
   if (match && match[2].length === 11) {
     return `https://img.youtube.com/vi/${match[2]}/hqdefault.jpg`;
   }
   return null;
+};
+
+const getGoogleDriveThumbnail = (url) => {
+  if (!url || !url.includes('drive.google.com')) return null;
+  const match = url.match(/\/file\/d\/([^/]+)/);
+  if (match && match[1]) {
+    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+  }
+  return null;
+};
+
+const isGoogleDriveLink = (url) => {
+  return url && url.includes('drive.google.com');
 };
 
 // --- SUB-COMPONENTS ---
@@ -66,6 +80,7 @@ const MediaSection = ({ memory, openLightbox }) => {
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
         {displayedMedia.map((item, i) => {
           const ytThumbnail = item.isExternal ? getYouTubeThumbnail(item.src) : null;
+          const driveThumbnail = item.isExternal ? getGoogleDriveThumbnail(item.src) : null;
           const actualIndex = combined.indexOf(item);
 
           return (
@@ -84,8 +99,13 @@ const MediaSection = ({ memory, openLightbox }) => {
                 />
               ) : (
                 <div className="relative w-full h-full bg-slate-900 group">
-                  {ytThumbnail ? (
-                    <img src={ytThumbnail} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Video preview"/>
+                  {item.isExternal ? (
+                    <img 
+                      src={ytThumbnail || driveThumbnail} 
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
+                      alt="Video preview"
+                      onError={(e) => { e.target.src = 'https://placehold.co/600x600?text=Video+Preview'; }}
+                    />
                   ) : (
                     <video
                       src={item.originalSrc}
@@ -101,8 +121,8 @@ const MediaSection = ({ memory, openLightbox }) => {
                     </div>
                   </div>
                   {item.isExternal && (
-                    <div className="absolute bottom-2 right-2 px-2 py-0.5 text-white text-[10px] rounded font-bold uppercase tracking-wider bg-red-600">
-                      YouTube
+                    <div className={`absolute bottom-2 right-2 px-2 py-0.5 text-white text-[10px] rounded font-bold uppercase tracking-wider ${isGoogleDriveLink(item.src) ? 'bg-blue-600' : 'bg-red-600'}`}>
+                      {isGoogleDriveLink(item.src) ? 'Drive' : 'YouTube'}
                     </div>
                   )}
                 </div>

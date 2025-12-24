@@ -33,12 +33,19 @@ const MediaModal = ({ isOpen, onClose, media, currentIndex, setCurrentIndex }) =
 
   const getYouTubeId = (url) => {
     if (!url || typeof url !== 'string') return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
   };
 
+  const getGoogleDriveEmbedUrl = (url) => {
+    if (!url || !url.includes('drive.google.com')) return null;
+    // Convert view link to preview link for embedding
+    return url.replace(/\/view.*$/, '/preview');
+  };
+
   const isYouTube = getYouTubeId(currentItem.src);
+  const isDrive = getGoogleDriveEmbedUrl(currentItem.src);
 
   return (
     <motion.div
@@ -104,6 +111,17 @@ const MediaModal = ({ isOpen, onClose, media, currentIndex, setCurrentIndex }) =
               className="absolute inset-0 w-full h-full"
               src={`https://www.youtube.com/embed/${isYouTube}?autoplay=1&mute=0&rel=0`}
               title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
+        ) : isDrive ? (
+          <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl bg-black">
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={isDrive}
+              title="Google Drive video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
