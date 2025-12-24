@@ -6,7 +6,7 @@ import { db } from '../lib/firebase';
 import { getOptimizedImage, getOptimizedVideo } from '../lib/cloudinary';
 import MediaModal from '../components/MediaModal';
 
-// --- HELPERS ---
+
 
 const getYouTubeThumbnail = (url) => {
   if (!url || typeof url !== 'string') return null;
@@ -65,8 +65,7 @@ const MediaSection = ({ memory, openLightbox }) => {
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
         {displayedMedia.map((item, i) => {
-          const ytId = item.isExternal ? (item.src.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^#&?]*)/)?.[1]) : null;
-          const ytThumbnail = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : null;
+          const ytThumbnail = item.isExternal ? getYouTubeThumbnail(item.src) : null;
           const actualIndex = combined.indexOf(item);
 
           return (
@@ -222,11 +221,27 @@ const Memories = () => {
                           </div>
                         ))}
                       </div>
-                      <div className="text-center">
+                      <div className="text-center space-y-6">
                         <div className="inline-block bg-gradient-to-br from-yellow-400 to-amber-600 text-white px-8 py-4 rounded-2xl shadow-xl">
                           <div className="font-bold text-xl mb-1 text-white">🏆 Final Winner: {memory.scorecard.finalWinner}</div>
                           <div className="text-sm font-medium opacity-90">{memory.scorecard.playerOfMatch}</div>
                         </div>
+
+                        {memory.scorecard.externalUrl && (
+                          <div className="mt-4">
+                            <a 
+                              href={memory.scorecard.externalUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-md"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                              View Full Scorecard on CricHeroes
+                            </a>
+                          </div>
+                        )}
                       </div>
                     </motion.div>
                   )}

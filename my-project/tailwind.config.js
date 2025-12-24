@@ -16,7 +16,9 @@ export default {
     'from-yellow-100', 'via-orange-50', 'to-pink-100',
     'from-red-100', 'via-orange-50', 'to-yellow-100',
     'from-indigo-100', 'via-purple-100', 'to-pink-100',
-    'from-red-100', 'via-cream', 'to-red-50'
+    'from-red-100', 'via-cream', 'to-red-50',
+    'from-pink-400', 'to-rose-100',
+    'from-sky-400', 'to-blue-100'
   ],
   theme: {
     extend: {
