@@ -12,9 +12,9 @@ const Memories = () => {
     {
       id: 1,
       title: "Welcome Ceremony",
-      date: "13 Dec 2024",
+      date: "13 & 15 Dec 2024",
       theme: "Welcome Home",
-      description: "Arrival of Hetvi to G2 901 & Arrival of Meet to Neelkamal. Family welcome, blessings, cake, and Gujarati snacks.",
+      description: "13 Dec: Hetvi visited G2 901 Happy Glorious & 15 Dec: Meet visited Neelkamal. Family welcome, blessings, cake, and Gujarati snacks.",
       colors: "from-pink-300 to-cream",
       images: 8,
       videos: 0
