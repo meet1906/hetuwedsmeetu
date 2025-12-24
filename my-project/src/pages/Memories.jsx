@@ -1,12 +1,61 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import MediaModal from '../components/MediaModal';
+
+// Import Photos
+import wcPhoto1 from '../assets/welcomeceremony/115f3cc9-60db-49fc-9754-9b4463ebe69f.jpg';
+import wcPhoto2 from '../assets/welcomeceremony/425e3e7d-c60e-4ff6-a5b1-80b9185762f6.jpg';
+import wcPhoto3 from '../assets/welcomeceremony/4fecaebb-d808-4e1e-8b59-74b57d2f51f3.jpg';
+import wcPhoto4 from '../assets/welcomeceremony/58fffcc0-91c6-418c-a24f-c5ea8c05f1e1.jpg';
+import wcPhoto5 from '../assets/welcomeceremony/6796ba37-4597-42d1-a7e9-bce0701bafdc.jpg';
+import wcPhoto6 from '../assets/welcomeceremony/768b68a7-9742-49ce-9b98-08700f4c36e4.jpg';
+import wcPhoto7 from '../assets/welcomeceremony/9743a047-60d6-40a8-9796-c5111ceda1ef.jpg';
+import wcPhoto8 from '../assets/welcomeceremony/9F41D0F9-15A2-4C01-87BD-92025102F55D.jpg';
+import wcPhoto9 from '../assets/welcomeceremony/d5e1dcf4-a24e-4c36-b9c6-d6acace37429.jpg';
+import wcPhoto10 from '../assets/welcomeceremony/f11b0b79-5069-4b5e-a2dc-13b7b3da2914.jpg';
+import wcPhoto11 from '../assets/welcomeceremony/IMG_0150.HEIC';
+import wcPhoto12 from '../assets/welcomeceremony/IMG_0157.HEIC';
+import wcPhoto13 from '../assets/welcomeceremony/IMG_0171.HEIC';
+import wcPhoto14 from '../assets/welcomeceremony/IMG_1407.HEIC';
+import wcPhoto15 from '../assets/welcomeceremony/IMG_1410.HEIC';
+import wcPhoto16 from '../assets/welcomeceremony/IMG_1415.HEIC';
+import wcPhoto17 from '../assets/welcomeceremony/IMG_1458.HEIC';
+import wcPhoto18 from '../assets/welcomeceremony/IMG_1471.HEIC';
+import wcPhoto19 from '../assets/welcomeceremony/IMG_1477.HEIC';
+import wcPhoto20 from '../assets/welcomeceremony/IMG_5417.HEIC';
+
+// Import Videos
+import wcVid1 from '../assets/welcomeceremony/IMG_0109.MOV';
+import wcVid2 from '../assets/welcomeceremony/IMG_0115.MOV';
+import wcVid3 from '../assets/welcomeceremony/IMG_0121.MOV';
+import wcVid4 from '../assets/welcomeceremony/IMG_0150.MP4';
+import wcVid5 from '../assets/welcomeceremony/IMG_0157.MP4';
+import wcVid6 from '../assets/welcomeceremony/IMG_0171.MP4';
+import wcVid7 from '../assets/welcomeceremony/IMG_1407.MP4';
+import wcVid8 from '../assets/welcomeceremony/IMG_1409.MOV';
+import wcVid9 from '../assets/welcomeceremony/IMG_1471.MP4';
+import wcVid10 from '../assets/welcomeceremony/IMG_1477.MP4';
 
 const Memories = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   });
+
+  const [modalState, setModalState] = React.useState({
+    isOpen: false,
+    media: [],
+    currentIndex: 0
+  });
+
+  const openLightbox = (mediaArray, index) => {
+    setModalState({
+      isOpen: true,
+      media: mediaArray,
+      currentIndex: index
+    });
+  };
 
   const memories = [
     {
@@ -16,8 +65,38 @@ const Memories = () => {
       theme: "Welcome Home",
       description: "13 Dec: Hetvi visited G2 901 Happy Glorious & 15 Dec: Meet visited Neelkamal. Family welcome, blessings, cake, and Gujarati snacks.",
       colors: "from-pink-300 to-cream",
-      images: 8,
-      videos: 0
+      media: [
+        { type: 'photo', src: wcPhoto1 },
+        { type: 'photo', src: wcPhoto2 },
+        { type: 'photo', src: wcPhoto3 },
+        { type: 'photo', src: wcPhoto4 },
+        { type: 'photo', src: wcPhoto5 },
+        { type: 'photo', src: wcPhoto6 },
+        { type: 'photo', src: wcPhoto7 },
+        { type: 'photo', src: wcPhoto8 },
+        { type: 'photo', src: wcPhoto9 },
+        { type: 'photo', src: wcPhoto10 },
+        { type: 'photo', src: wcPhoto11 },
+        { type: 'photo', src: wcPhoto12 },
+        { type: 'photo', src: wcPhoto13 },
+        { type: 'photo', src: wcPhoto14 },
+        { type: 'photo', src: wcPhoto15 },
+        { type: 'photo', src: wcPhoto16 },
+        { type: 'photo', src: wcPhoto17 },
+        { type: 'photo', src: wcPhoto18 },
+        { type: 'photo', src: wcPhoto19 },
+        { type: 'photo', src: wcPhoto20 },
+        { type: 'video', src: wcVid1 },
+        { type: 'video', src: wcVid2 },
+        { type: 'video', src: wcVid3 },
+        { type: 'video', src: wcVid4 },
+        { type: 'video', src: wcVid5 },
+        { type: 'video', src: wcVid6 },
+        { type: 'video', src: wcVid7 },
+        { type: 'video', src: wcVid8 },
+        { type: 'video', src: wcVid9 },
+        { type: 'video', src: wcVid10 },
+      ]
     },
     {
       id: 2,
@@ -96,38 +175,88 @@ const Memories = () => {
                 </div>
 
                 {/* Media Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                  {/* Image Placeholders */}
-                  {[...Array(Math.min(memory.images, 8))].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      whileHover={{ scale: 1.05 }}
-                      className="aspect-square bg-white/50 backdrop-blur-sm rounded-2xl flex items-center justify-center cursor-pointer hover:bg-white/70 transition-all duration-300"
-                    >
-                      <div className="text-center">
-                        <div className="w-8 h-8 bg-gray-400 rounded-lg mx-auto mb-2"></div>
-                        <span className="text-xs text-gray-600">Photo {i + 1}</span>
-                      </div>
-                    </motion.div>
-                  ))}
-
-                  {/* Video Placeholders */}
-                  {[...Array(memory.videos)].map((_, i) => (
-                    <motion.div
-                      key={`video-${i}`}
-                      whileHover={{ scale: 1.05 }}
-                      className="aspect-square bg-white/50 backdrop-blur-sm rounded-2xl flex items-center justify-center cursor-pointer hover:bg-white/70 transition-all duration-300"
-                    >
-                      <div className="text-center">
-                        <div className="w-8 h-8 bg-red-400 rounded-lg mx-auto mb-2 relative">
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-0 h-0 border-l-4 border-l-white border-y-2 border-y-transparent"></div>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+                  {memory.media ? (
+                    memory.media.map((item, i) => (
+                      <motion.div
+                        key={i}
+                        whileHover={{ scale: 1.05 }}
+                        onClick={() => openLightbox(memory.media, i)}
+                        className="aspect-square bg-white/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+                      >
+                        {item.type === 'photo' ? (
+                          <img 
+                            src={item.src} 
+                            alt={`${memory.title} ${i + 1}`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              // Fallback for potentially unsupported formats like HEIC in some browsers
+                              e.target.style.display = 'none';
+                              e.target.parentElement.innerHTML = `
+                                <div class="flex flex-col items-center justify-center h-full p-2 text-center bg-gray-100">
+                                  <svg class="w-8 h-8 text-gray-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                  </svg>
+                                  <span class="text-[10px] text-gray-500">Image ${i + 1}</span>
+                                </div>
+                              `;
+                            }}
+                          />
+                        ) : (
+                          <div className="relative w-full h-full bg-black/10 group">
+                            <video
+                              src={item.src}
+                              className="w-full h-full object-cover"
+                              muted
+                              onMouseEnter={(e) => e.target.play()}
+                              onMouseLeave={(e) => {
+                                e.target.pause();
+                                e.target.currentTime = 0;
+                              }}
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none group-hover:opacity-0 transition-opacity">
+                              <div className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center shadow-lg">
+                                <div className="w-0 h-0 border-l-8 border-l-pink-500 border-y-6 border-y-transparent ml-1"></div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <span className="text-xs text-gray-600">Video {i + 1}</span>
-                      </div>
-                    </motion.div>
-                  ))}
+                        )}
+                      </motion.div>
+                    ))
+                  ) : (
+                    <>
+                      {/* Original Placeholders for other memories */}
+                      {[...Array(Math.min(memory.images || 0, 8))].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          whileHover={{ scale: 1.05 }}
+                          className="aspect-square bg-white/50 backdrop-blur-sm rounded-2xl flex items-center justify-center cursor-pointer hover:bg-white/70 transition-all duration-300"
+                        >
+                          <div className="text-center">
+                            <div className="w-8 h-8 bg-gray-400 rounded-lg mx-auto mb-2"></div>
+                            <span className="text-xs text-gray-600">Photo {i + 1}</span>
+                          </div>
+                        </motion.div>
+                      ))}
+
+                      {[...Array(memory.videos || 0)].map((_, i) => (
+                        <motion.div
+                          key={`video-${i}`}
+                          whileHover={{ scale: 1.05 }}
+                          className="aspect-square bg-white/50 backdrop-blur-sm rounded-2xl flex items-center justify-center cursor-pointer hover:bg-white/70 transition-all duration-300"
+                        >
+                          <div className="text-center">
+                            <div className="w-8 h-8 bg-red-400 rounded-lg mx-auto mb-2 relative">
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-0 h-0 border-l-4 border-l-white border-y-2 border-y-transparent"></div>
+                              </div>
+                            </div>
+                            <span className="text-xs text-gray-600">Video {i + 1}</span>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </>
+                  )}
                 </div>
 
                 {/* Cricket Scorecard */}
@@ -174,17 +303,27 @@ const Memories = () => {
                   </motion.div>
                 )}
 
-                {/* View More Button */}
-                <div className="text-center mt-8">
-                  <button className="bg-white/70 hover:bg-white text-gray-800 font-semibold py-3 px-8 rounded-xl transition-all duration-300 hover:shadow-lg">
-                    View All Photos
-                  </button>
-                </div>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {modalState.isOpen && (
+          <MediaModal
+            key="media-modal"
+            isOpen={modalState.isOpen}
+            onClose={() => setModalState(prev => ({ ...prev, isOpen: false }))}
+            media={modalState.media}
+            currentIndex={modalState.currentIndex}
+            setCurrentIndex={(newIndex) => setModalState(prev => ({ 
+              ...prev, 
+              currentIndex: typeof newIndex === 'function' ? newIndex(prev.currentIndex) : newIndex 
+            }))}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
