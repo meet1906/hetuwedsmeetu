@@ -329,7 +329,7 @@ const Blessings = () => {
                     </div>
                     <div>
                       <h4 className="font-bold text-gray-800">{blessing.name}</h4>
-                      <p className="text-xs text-gray-400">Approved Blessing</p>
+                      {/* <p className="text-xs text-gray-400">Approved Blessing</p> */}
                     </div>
                   </div>
                 </motion.div>
