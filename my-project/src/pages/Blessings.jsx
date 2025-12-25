@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { QRCodeCanvas } from 'qrcode.react';
 
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWkyoTk6i3Qmvi35z6b8EQ0ogQl4eEmgJBMo7y7MUY-Uz1uegmTf2pm96cbQkWeqIGqQ/exec';
+
 const Blessings = () => {
   // Blessings Form State
   const [formData, setFormData] = useState({
@@ -10,11 +12,34 @@ const Blessings = () => {
     amount: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [blessings, setBlessings] = useState([]);
+  const [loadingBlessings, setLoadingBlessings] = useState(true);
 
   // UPI details
   const upiId = 'parvashah305@okicici';
   const upiName = 'Parva Shah';
+
+  // Fetch approved blessings
+  useEffect(() => {
+    const fetchBlessings = async () => {
+      if (!APPS_SCRIPT_URL) {
+        setLoadingBlessings(false);
+        return;
+      }
+      try {
+        const response = await fetch(APPS_SCRIPT_URL);
+        const data = await response.json();
+        setBlessings(data);
+      } catch (error) {
+        console.error('Error fetching blessings:', error);
+      } finally {
+        setLoadingBlessings(false);
+      }
+    };
+    fetchBlessings();
+  }, []);
 
   // Generate QR code URL using Google Chart API
   const upiLink = formData.amount && !isNaN(formData.amount) && Number(formData.amount) > 0
@@ -22,18 +47,38 @@ const Blessings = () => {
     : `upi://pay?pa=${upiId}&pn=${upiName}&cu=INR`;
 
   // Blessings Form Handlers
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // If no amount, show thank you immediately
+    setIsSubmitting(true);
+
+    // 1. Save to Google Sheets if URL is provided
+    if (APPS_SCRIPT_URL) {
+      try {
+        const queryParams = new URLSearchParams({
+          name: formData.name,
+          message: formData.message
+        });
+
+        await fetch(`${APPS_SCRIPT_URL}?${queryParams.toString()}`, {
+          method: 'GET',
+          mode: 'no-cors'
+        });
+      } catch (error) {
+        console.error('Error submitting to Google Sheets:', error);
+      }
+    }
+
+    setIsSubmitting(false);
+
+    // 2. Handle payment flow
     if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) < 1) {
       setIsSubmitted(true);
       return;
     }
-    // If amount is entered, handle payment
+
     const isMobile = /android|iphone|ipad|ipod|opera mini|iemobile|mobile/i.test(navigator.userAgent);
     if (isMobile) {
       window.location.href = upiLink;
-      // After redirect, show thank you (best effort, as redirect is instant)
       setTimeout(() => setIsSubmitted(true), 1000);
     } else {
       setShowModal(true);
@@ -172,9 +217,17 @@ const Blessings = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                disabled={isSubmitting}
+                className={`w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                Send Blessings
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Sending...
+                  </>
+                ) : (
+                  'Send Blessings'
+                )}
               </motion.button>
             </form>
           ) : (
@@ -231,16 +284,74 @@ const Blessings = () => {
               <p className="text-lg text-gray-500">
                 Hetu & Meetu are grateful for your love and support
               </p>
+              <button
+                onClick={() => setIsSubmitted(false)}
+                className="mt-8 text-pink-600 font-semibold hover:text-pink-700 transition-colors"
+              >
+                ← Send another message
+              </button>
             </motion.div>
           )}
         </motion.div>
+
+        {/* Messages Section */}
+        {blessings.length > 0 && (
+          <div className="mt-24">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-4xl font-serif font-bold text-gray-800 mb-4">Messages of Love</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-pink-400 to-purple-400 mx-auto rounded-full"></div>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {blessings.map((blessing, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white p-8 rounded-3xl shadow-md border border-pink-50 relative group hover:shadow-xl transition-shadow duration-300"
+                >
+                  <div className="absolute top-4 right-6 text-4xl text-pink-100 group-hover:text-pink-200 transition-colors pointer-events-none font-serif rotate-12">
+                    "
+                  </div>
+                  <p className="text-gray-700 text-lg italic leading-relaxed mb-6 relative z-10">
+                    {blessing.message}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-200 to-purple-200 flex items-center justify-center font-bold text-pink-600">
+                      {blessing.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-800">{blessing.name}</h4>
+                      <p className="text-xs text-gray-400">Approved Blessing</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Loading/Empty State for Blessings */}
+        {loadingBlessings && blessings.length === 0 && APPS_SCRIPT_URL && (
+          <div className="mt-24 text-center">
+            <div className="w-10 h-10 border-4 border-pink-100 border-t-pink-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-500 italic">Fetching beautiful messages...</p>
+          </div>
+        )}
 
         {/* Decorative Quote */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-center mt-16"
+          className="text-center mt-24"
         >
           <blockquote className="text-2xl md:text-3xl font-serif italic text-gray-600 max-w-3xl mx-auto">
             "Love is not just looking at each other, it's looking in the same direction together."
