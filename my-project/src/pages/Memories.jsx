@@ -34,6 +34,81 @@ const isGoogleDriveLink = (url) => {
 
 // --- SUB-COMPONENTS ---
 
+const MemoryCard = ({ memory, index, openLightbox }) => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.05 });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay: 0.1 }}
+      className={`bg-gradient-to-br ${memory.colors} rounded-3xl shadow-xl overflow-hidden`}
+    >
+      <div className="p-8 md:p-12">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-800 mb-4">{memory.title}</h2>
+          <p className="text-xl text-gray-700/80 mb-2 font-medium">{memory.date}</p>
+          <p className="text-lg text-gray-600 italic mb-6">{memory.theme}</p>
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">{memory.description}</p>
+        </div>
+
+        <MediaSection memory={memory} openLightbox={openLightbox} />
+
+        {memory.scorecard && (
+          <motion.div 
+            className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 mt-12 shadow-inner border border-white/50"
+          >
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Match Scorecard</h3>
+            <div className="grid md:grid-cols-3 gap-4 mb-8">
+              {memory.scorecard.matches.map((match, i) => (
+                <div key={i} className="bg-white/40 rounded-xl p-4 border border-white/30">
+                  <h4 className="font-bold text-gray-800 mb-3 text-center">Match {match.match}</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Team Meet</span>
+                      <span className="font-mono font-bold text-gray-800">{match.teamMeet}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Team Hetvi</span>
+                      <span className="font-mono font-bold text-gray-800">{match.teamHetvi}</span>
+                    </div>
+                    <div className="border-t border-gray-200 pt-2 font-semibold text-center text-green-600 mt-2">
+                      Winner: {match.winner}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="text-center space-y-6">
+              <div className="inline-block bg-gradient-to-br from-yellow-400 to-amber-600 text-white px-8 py-4 rounded-2xl shadow-xl">
+                <div className="font-bold text-xl mb-1 text-white">🏆 Final Winner: {memory.scorecard.finalWinner}</div>
+                <div className="text-sm font-medium opacity-90">{memory.scorecard.playerOfMatch}</div>
+              </div>
+
+              {memory.scorecard.externalUrl && (
+                <div className="mt-4">
+                  <a 
+                    href={memory.scorecard.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-md"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    View Full Scorecard on CricHeroes
+                  </a>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
 const MediaSection = ({ memory, openLightbox }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
@@ -111,6 +186,7 @@ const MediaSection = ({ memory, openLightbox }) => {
                       src={item.originalSrc}
                       className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                       muted
+                      playsInline
                       onMouseEnter={(e) => e.target.play()}
                       onMouseLeave={(e) => { e.target.pause(); e.target.currentTime = 0; }}
                     />
@@ -152,7 +228,6 @@ const MediaSection = ({ memory, openLightbox }) => {
 // --- MAIN PAGE ---
 
 const Memories = () => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [modalState, setModalState] = useState({ isOpen: false, media: [], currentIndex: 0 });
   const [memories, setMemories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -197,76 +272,14 @@ const Memories = () => {
             <p className="text-gray-500 font-medium">Loading memories from the cloud...</p>
           </div>
         ) : (
-          <div ref={ref} className="space-y-16">
+          <div className="space-y-16">
             {memories.map((memory, index) => (
-              <motion.div
-                key={memory.docId}
-                initial={{ opacity: 0, y: 100 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: index * 0.3 }}
-                className={`bg-gradient-to-br ${memory.colors} rounded-3xl shadow-xl overflow-hidden`}
-              >
-                <div className="p-8 md:p-12">
-                  <div className="text-center mb-8">
-                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-800 mb-4">{memory.title}</h2>
-                    <p className="text-xl text-gray-700/80 mb-2 font-medium">{memory.date}</p>
-                    <p className="text-lg text-gray-600 italic mb-6">{memory.theme}</p>
-                    <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">{memory.description}</p>
-                  </div>
-
-                  <MediaSection memory={memory} openLightbox={openLightbox} />
-
-                  {memory.scorecard && (
-                    <motion.div 
-                      className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 mt-12 shadow-inner border border-white/50"
-                    >
-                      <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Match Scorecard</h3>
-                      <div className="grid md:grid-cols-3 gap-4 mb-8">
-                        {memory.scorecard.matches.map((match, i) => (
-                          <div key={i} className="bg-white/40 rounded-xl p-4 border border-white/30">
-                            <h4 className="font-bold text-gray-800 mb-3 text-center">Match {match.match}</h4>
-                            <div className="space-y-2 text-sm">
-                              <div className="flex justify-between">
-                                <span className="text-gray-600">Team Meet</span>
-                                <span className="font-mono font-bold text-gray-800">{match.teamMeet}</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-gray-600">Team Hetvi</span>
-                                <span className="font-mono font-bold text-gray-800">{match.teamHetvi}</span>
-                              </div>
-                              <div className="border-t border-gray-200 pt-2 font-semibold text-center text-green-600 mt-2">
-                                Winner: {match.winner}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="text-center space-y-6">
-                        <div className="inline-block bg-gradient-to-br from-yellow-400 to-amber-600 text-white px-8 py-4 rounded-2xl shadow-xl">
-                          <div className="font-bold text-xl mb-1 text-white">🏆 Final Winner: {memory.scorecard.finalWinner}</div>
-                          <div className="text-sm font-medium opacity-90">{memory.scorecard.playerOfMatch}</div>
-                        </div>
-
-                        {memory.scorecard.externalUrl && (
-                          <div className="mt-4">
-                            <a 
-                              href={memory.scorecard.externalUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-md"
-                            >
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                              </svg>
-                              View Full Scorecard on CricHeroes
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
-              </motion.div>
+              <MemoryCard 
+                key={memory.docId} 
+                memory={memory} 
+                index={index} 
+                openLightbox={openLightbox} 
+              />
             ))}
           </div>
         )}

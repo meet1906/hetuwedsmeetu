@@ -133,6 +133,7 @@ const MediaModal = ({ isOpen, onClose, media, currentIndex, setCurrentIndex }) =
               src={currentItem.src}
               controls
               autoPlay
+              playsInline
               className="max-w-full max-h-[85vh] rounded-lg shadow-2xl mx-auto"
             />
           </div>
