@@ -5,6 +5,7 @@ import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { getOptimizedImage, getOptimizedVideo } from '../lib/cloudinary';
 import MediaModal from '../components/MediaModal';
+import GuestQR from '../components/GuestQR';
 
 
 
@@ -103,6 +104,25 @@ const MemoryCard = ({ memory, index, openLightbox }) => {
               )}
             </div>
           </motion.div>
+        )}
+
+        {memory.reels && (
+          <div className="flex flex-wrap justify-center gap-4 mt-12">
+            {memory.reels.map((reel, i) => (
+              <a 
+                key={i}
+                href={reel.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-md group"
+              >
+                <svg className="w-5 h-5 group-hover:animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                </svg>
+                Watch {reel.title}
+              </a>
+            ))}
+          </div>
         )}
       </div>
     </motion.div>
@@ -265,6 +285,8 @@ const Memories = () => {
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-gray-800 mb-6 font-primary">Our Memories</h1>
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">Capturing the beautiful moments of our journey together</p>
         </motion.div>
+
+        <GuestQR />
 
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">

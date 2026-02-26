@@ -232,6 +232,57 @@ const MEMORIES_DATA = [
       { type: "photo", src: "wedding/meet-kankotri/P3964373" },
       { type: "photo", src: "wedding/meet-kankotri/P3964428" }
     ] // Add Cloudinary IDs here later!
+  },
+  {
+    id: "grand-wedding",
+    order: 6,
+    title: "Our Grand Wedding",
+    date: "12-13 Feb 2026",
+    theme: "Carnival, Sangeet & Wedding",
+    description: "A beautiful two-day celebration of our Carnival, Sangeet, and the Grand Wedding day.",
+    colors: "from-rose-200 via-purple-100 to-amber-100",
+    media: [
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.38_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.38" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.39_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.39" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.40_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.40_2" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.40" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.41_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.41" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.42_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.42" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.43_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.43" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.44_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.44" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.45_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.45_2" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.45" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.46_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.46" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.47_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.47" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.48_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.48" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.49_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.49_2" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.49" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.50_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.50" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.51_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.51_2" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.51" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.52_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.52" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.53_1" },
+      { type: "photo", src: "wedding/main-events/WhatsApp_Image_2026-02-17_at_13.41.53" }
+    ],
+    reels: [
+      { title: "Carnival Reel", url: "https://site.fotoowl.ai/studio942/gallery/198677?album_selection=true&pass_key=7976" },
+      { title: "Sangeet Reel", url: "https://site.fotoowl.ai/studio942/gallery/198677?album_selection=true&pass_key=7976" }
+    ]
   }
 ];
 
